@@ -2,6 +2,8 @@ import Html exposing (..)
 --import Html.Attributes exposing (..)
 --import Html.Events exposing (onClick)
 
+import Entropy exposing (..)
+
 
 main : Program Never Model Msg
 main =
@@ -63,5 +65,5 @@ view : Model -> Html Msg
 view model =
     div []
         [ text "Hello, world!"
-        , text (toString model)
+        , text (toString (costMult 999999 1000000))
         ]
