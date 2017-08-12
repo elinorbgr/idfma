@@ -17,4 +17,4 @@ costMult e maxe =
 -- currentEntropy -> maxEntropy -> prodMult
 prodMult : Float -> Float -> Float
 prodMult e maxe =
-    if e < maxe then sqrt ((e/maxe) / atanh (e/maxe)) else 0.0
+    if e < maxe then sqrt ((e/maxe) / (0.00000001 + (atanh (e/maxe)))) else 0.0

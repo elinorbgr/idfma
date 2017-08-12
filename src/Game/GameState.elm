@@ -6,7 +6,7 @@ import Maybe exposing (..)
 
 import Game.Resources exposing (Resource)
 import Game.Buildings exposing (Building, baseProd, baseCost, entropyCost, initialBuildings)
-import Game.Entropy exposing (costMult)
+import Game.Entropy exposing (costMult, prodMult)
 
 type alias GameState =
     { lastUpdate: Time
@@ -28,7 +28,10 @@ newGame =
 -- Gathering
 gather: GameState -> Resource -> GameState
 gather gs resource =
-    { gs | storage = gs.storage |> EveryDict.update resource (\val -> Just (1.0 + (withDefault 0.0 val))) }
+    let
+        entropyRatio = prodMult gs.entropy gs.maxEntropy
+    in
+        { gs | storage = gs.storage |> EveryDict.update resource (\val -> Just (entropyRatio + (withDefault 0.0 val))) }
 
 -- Building actions
 
@@ -70,24 +73,25 @@ tickUpdate: GameState -> Time -> GameState
 tickUpdate gs t = 
     let
         delta = t - gs.lastUpdate
+        entropyRatio = prodMult gs.entropy gs.maxEntropy
     in
         if delta <= 0 then {
             gs | lastUpdate = t
         } else {
             gs | lastUpdate = t
-               , storage = tickResources delta gs.storage gs.buildings
+               , storage = tickResources delta gs.storage gs.buildings entropyRatio
         }
 
-tickResources: Time -> EveryDict Resource Float -> EveryDict Building Int -> EveryDict Resource Float
-tickResources delta resources buildings =
+tickResources: Time -> EveryDict Resource Float -> EveryDict Building Int -> Float -> EveryDict Resource Float
+tickResources delta resources buildings ratio =
     buildings
-        |> EveryDict.map (\building count -> computeBuildingProd delta building count)
+        |> EveryDict.map (\building count -> computeBuildingProd delta building count ratio)
         |> foldl (\_ prod acc -> updateResourcesWithProd acc prod) resources
 
-computeBuildingProd: Time -> Building -> Int -> List (Resource, Float)
-computeBuildingProd delta building count =
+computeBuildingProd: Time -> Building -> Int -> Float -> List (Resource, Float)
+computeBuildingProd delta building count ratio =
     baseProd building
-        |> List.map (\(resource, amount) -> (resource, amount*(toFloat count)*(inSeconds delta)))
+        |> List.map (\(resource, amount) -> (resource, amount*(toFloat count)*(inSeconds delta)*ratio))
 
 updateResourcesWithProd: EveryDict Resource Float -> List (Resource, Float) -> EveryDict Resource Float
 updateResourcesWithProd resources prod =
