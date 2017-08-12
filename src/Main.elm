@@ -2,8 +2,11 @@ import Html exposing (..)
 --import Html.Attributes exposing (..)
 --import Html.Events exposing (onClick)
 
-import Entropy exposing (..)
+import Time exposing (Time, second)
 
+import Model exposing (Model, init, update)
+import Msg exposing (..)
+import View exposing (view)
 
 main : Program Never Model Msg
 main =
@@ -14,56 +17,8 @@ main =
         , subscriptions = subscriptions
         }
 
-
-
--- MODEL
-
-
-type alias Model =
-    {}
-
-
-initialModel : Model
-initialModel =
-    {}
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Cmd.none )
-
-
-
--- UPDATE
-
-
-type Msg
-    = NoOp
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        NoOp ->
-            ( model, Cmd.none )
-
-
-
 -- SUBSCRIPTIONS
-
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
-
-
-
--- VIEW
-
-
-view : Model -> Html Msg
-view model =
-    div []
-        [ text "Hello, world!"
-        , text (toString (costMult 999999 1000000))
-        ]
+    Time.every second Tick

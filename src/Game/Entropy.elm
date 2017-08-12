@@ -1,4 +1,4 @@
-module Entropy exposing (costMult, prodMult)
+module Game.Entropy exposing (costMult, prodMult)
 
 -- some math utils
 atanh : Float -> Float
