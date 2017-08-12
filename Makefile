@@ -1,7 +1,7 @@
 
 install-deps:
 	npm install -g elm-css
-	elm package install
+	elm package install -y
 
 build: main.js main.css
 
