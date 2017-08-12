@@ -1,4 +1,4 @@
-module Game.Entropy exposing (costMult, prodMult)
+module Game.Entropy exposing (prodMult)
 
 -- some math utils
 atanh : Float -> Float
@@ -7,14 +7,8 @@ atanh x =
 
 -- entropy multipliers computation
 
--- multicative cost depending on current entropy
--- currentEntropy -> maxEntropy -> costMult
-costMult : Float -> Float -> Float
-costMult e maxe =
-    if e < maxe then (atanh (e/maxe) * maxe) + 1.0 else 1.0/0.0
-
 -- multiplicative malus of automated production on current entropy
 -- currentEntropy -> maxEntropy -> prodMult
 prodMult : Float -> Float -> Float
 prodMult e maxe =
-    if e < maxe then sqrt ((e/maxe) / (0.00000001 + (atanh (e/maxe)))) else 0.0
+    if e < maxe then (1.0 / (1.0 + (atanh (e/maxe)))) else 0.0

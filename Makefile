@@ -1,3 +1,4 @@
+default: build
 
 install-deps:
 	npm install -g elm-css

@@ -1,4 +1,4 @@
-module Game.GameState exposing (GameState, newGame, tickUpdate, build, computeCost, gather)
+module Game.GameState exposing (GameState, newGame, tickUpdate, build, gather)
 
 import Time exposing (Time, inSeconds)
 import EveryDict exposing (..)
@@ -6,7 +6,7 @@ import Maybe exposing (..)
 
 import Game.Resources exposing (Resource)
 import Game.Buildings exposing (Building, baseProd, baseCost, entropyCost, initialBuildings)
-import Game.Entropy exposing (costMult, prodMult)
+import Game.Entropy exposing (prodMult)
 
 type alias GameState =
     { lastUpdate: Time
@@ -38,7 +38,7 @@ gather gs resource =
 build: GameState -> Building -> GameState
 build gs building =
     let
-        cost = computeCost gs building
+        cost = baseCost building
         canBuild = cost |> List.map (\(resource, amount) -> (EveryDict.get resource gs.storage |> withDefault 0.0) >= amount)
                         |> List.foldr (\l r -> l && r) True
     in
@@ -55,17 +55,6 @@ consume storage cost =
                         val |> Maybe.map (\v -> v - cost)
                     )
                   ) storage
-
-computeCost: GameState -> Building -> List (Resource, Float)
-computeCost gs building =
-    let
-        -- entropy cost increase is computed from the new entropy that
-        -- would e if the building was built
-        newEntropy = gs.entropy + (entropyCost building)
-        costFactor = costMult newEntropy gs.maxEntropy
-    in
-        baseCost building
-            |> List.map (\(resource, cost) -> (resource, cost*costFactor))
 
 -- Tick update of the game state
 
