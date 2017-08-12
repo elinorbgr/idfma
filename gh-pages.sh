@@ -14,5 +14,5 @@ git init
 git config user.name "Victor Berger (via Travis CI)"
 git config user.email "victor.berger@m4x.org"
 git add .
-git commit -m "Deploy to GitHub Pages [Travus CI]"
+git commit -m "Deploy to GitHub Pages [Travis CI]"
 git push --force "https://${GH_TOKEN}@github.com/vberger/idfma.git" master:gh-pages
