@@ -1,0 +1,42 @@
+language: node_js
+
+cache:
+  directories:
+    - sysconfcpus
+    - node_modules
+    - elm-stuff
+
+git:
+  depth: 50
+
+branches:
+  only:
+    - master
+
+before_install:
+  - |
+  if [ ! -d sysconfcpus/bin ];
+  then
+    git clone https://github.com/obmarg/libsysconfcpus.git;
+    cd libsysconfcpus;
+    ./configure --prefix=$TRAVIS_BUILD_DIR/sysconfcpus;
+    make && make install;
+    cd ..;
+    rm -rf libsysconfcpus;
+  fi
+
+install:
+  - npm install -g elm@0.18.0
+  - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
+  - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus
+  -n 2 elm-make-old "$@"' > $(npm config get prefix)/bin/elm-make
+  - chmod +x $(npm config get prefix)/bin/elm-make
+  - make install-deps
+
+script:
+  - make build
+  - "./gh-pages.sh"
+
+env:
+  global:
+    secure: ld4t2bewc6HMOYzRDWsiQYonfKVhQZT5c2FFcVQOQHQv0VugwOH/IL34ur+vbNAgNmqzacpkOoxVw/CwuHYw2pFYryn7tox49n2IKdc670VdptVVKhgLAOG7kuOxoXJY2PWs9NAqiNc3UzB+FanFP9IRI+OxpKDR/fbpqaLUd7vpvIvPuznXuPJlF4e4+CU/I5R7ZR+qdkXECWyQF71BoKWdQdXLbMJiUs/E3exGk2wmI22QTDEX7ihuBS+dy/V2sPkxFk6vY5CEsxi4TguIllmGHU+5yDquUjWOprNABa5bk5CT6XBDWwpyP+jeE58ksy2hU4MHeSmCJNEUqsbOaYValHhymq2nB/nE0JVn5mh4LMHrhjkovpHGclsvrkL/LTa7yw/YcX74yCqwRiDzoqrhSnIqMUsRdaqeyyWFFP5c8s8o7bY2EDqKL7IajOW3ELXa7pfcpqzZwgIDS0YDWc4S1uh3DXZbkF9/xr2J1PrO+PSo1s0l5BgRi3LrDwEdOXQE/t78dbJc0LvhS5SwC1h7Q3EoDcemvcFrXahEj9Ab6uj8UWP9cH/3UNI2Yf8G6mdQVD7vBm8P6Zx0zisr/valPhtBB3MdV+zKPHQrZ4+7dGjecb/RuV2fbwSXEICSEgnJNVN59eqm5Hsson2/UIKJUMHJSSoLenTfjgTfLfc=
