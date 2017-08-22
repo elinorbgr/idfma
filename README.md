@@ -4,10 +4,12 @@
 
 You need to have [Elm](http://elm-lang.org/) 0.18 installed on your machine.
 
+Install dependencies with:
+
+    make install-deps
+
 Compile this project with:
 
-    elm make src/Main.elm
+    make build
 
-Then view it:
-
-    elm reactor
+Then view it by opening `index.html`
