@@ -2,7 +2,7 @@
 
 ## Getting started
 
-You need to have [Elm](http://elm-lang.org/) 0.18 installed on your machine.
+You need to have NodeJS and npm installed on your machine.
 
 Install dependencies with:
 

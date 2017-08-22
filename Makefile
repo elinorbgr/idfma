@@ -1,7 +1,10 @@
+PATH := node_modules/.bin:$(PATH)
+
 default: build
 
 install-deps:
-	npm install -g elm-css
+	which elm || npm install elm
+	which elm-css || npm install elm-css
 	elm package install -y
 
 build: main.js main.css
@@ -12,3 +15,8 @@ main.js: src/*.elm
 main.css: src/Style.elm
 	elm css src/Stylesheets.elm
 
+clean:
+	rm main.js main.css
+
+purge:
+	rm -rf node_modules elm-stuff main.js main.css
