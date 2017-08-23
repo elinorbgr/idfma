@@ -5,14 +5,15 @@ import Css.Elements exposing (..)
 import Css.Namespace exposing (namespace)
 
 type CssClasses
-    = BuildingActive
-    | BuildingInactive
-    | BuildingName
+    = Active
+    | Inactive
+    | Name
 
 type CssIds
     = BuildingList
     | ResourceList
-    | GatherList
+    | TabList
+    | Tab
 
 css =
     (stylesheet << namespace "idfma")
@@ -21,10 +22,13 @@ css =
         ]
     , id ResourceList
         [ listStyle none
+        , border3 (px 1) solid (hex "000000")
+        , borderRadius (px 4)
         , children
             [ li
                 [ (display inlineBlock) |> important
                 , border3 (px 1) solid (hex "000000")
+                , borderRadius (px 4)
                 , padding (px 2)
                 , margin (px 2)
                 , children
@@ -35,12 +39,15 @@ css =
                 ]
             ]
         ]
-    , id GatherList
+    , id TabList
         [ listStyle none
+        , border3 (px 1) solid (hex "000000")
+        , borderRadius (px 4)
+        , float left
         , children
             [ li
-                [ (display inlineBlock) |> important
-                , border3 (px 1) solid (hex "000000")
+                [ border3 (px 1) solid (hex "000000")
+                , borderRadius (px 4)
                 , padding (px 8)
                 , margin (px 8)
                 , cursor pointer
@@ -49,19 +56,31 @@ css =
         ]
     , id BuildingList
         [ listStyle none
+        , border3 (px 1) solid (hex "000000")
+        , borderRadius (px 4)
+        , marginLeft (px 350)
+        , maxWidth (px 620)
+        , minHeight (px 30)
         , children
             [ li
                 [ (display inlineBlock) |> important
                 , border3 (px 1) solid (hex "000000")
+                , borderRadius (px 4)
+                , width (px 250)
                 , padding (px 8)
                 , margin (px 8)
                 , cursor pointer
                 ]
             ]
         ]
-    , class BuildingName
+    , class Name
         [ fontWeight bold
         ]
+    , class Active
+        [
+        ]
+    , class Inactive
+        [ backgroundColor (hex "B0B0B0")
+        ]
     ]
-
 

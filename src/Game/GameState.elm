@@ -1,17 +1,18 @@
-module Game.GameState exposing (GameState, newGame, tickUpdate, build, gather)
+module Game.GameState exposing (GameState, newGame, tickUpdate, build, gather, canBuild)
 
 import Time exposing (Time, inSeconds)
 import EveryDict exposing (..)
 import Maybe exposing (..)
 
 import Game.Resources exposing (Resource)
-import Game.Buildings exposing (Building, baseProd, baseCost, entropyCost, initialBuildings)
+import Game.Buildings exposing (Building, Level, initialLevel, baseProd, baseCost, entropyCost, initialBuildings)
 import Game.Entropy exposing (prodMult)
 
 type alias GameState =
     { lastUpdate: Time
     , storage: EveryDict Resource Float
     , buildings: EveryDict Building Int
+    , level: Level
     , entropy: Float
     , maxEntropy: Float
     }
@@ -21,6 +22,7 @@ newGame =
     { lastUpdate = 0.0
     , storage = empty
     , buildings = EveryDict.fromList (initialBuildings |> List.map (\b -> (b, 0)))
+    , level = initialLevel
     , entropy = 0.0
     , maxEntropy = 1000.0
     }
@@ -35,18 +37,20 @@ gather gs resource =
 
 -- Building actions
 
+canBuild: GameState -> Building -> Bool
+canBuild gs b =
+    baseCost b
+        |> List.map (\(resource, amount) -> (EveryDict.get resource gs.storage |> withDefault 0.0) >= amount)
+        |> List.foldr (\l r -> l && r) True
+
+
 build: GameState -> Building -> GameState
 build gs building =
-    let
-        cost = baseCost building
-        canBuild = cost |> List.map (\(resource, amount) -> (EveryDict.get resource gs.storage |> withDefault 0.0) >= amount)
-                        |> List.foldr (\l r -> l && r) True
-    in
-        if canBuild then {
-            gs | buildings = EveryDict.update building (\count -> Just (1 + (withDefault 0 count))) gs.buildings
-               , storage = consume gs.storage cost
-               , entropy = gs.entropy + (entropyCost building)
-        } else gs
+    if (canBuild gs building) then {
+        gs | buildings = EveryDict.update building (\count -> Just (1 + (withDefault 0 count))) gs.buildings
+           , storage = consume gs.storage (baseCost building)
+           , entropy = gs.entropy + (entropyCost building)
+    } else gs
 
 consume: EveryDict Resource Float -> List (Resource, Float) -> EveryDict Resource Float
 consume storage cost =
@@ -85,4 +89,5 @@ computeBuildingProd delta building count ratio =
 updateResourcesWithProd: EveryDict Resource Float -> List (Resource, Float) -> EveryDict Resource Float
 updateResourcesWithProd resources prod =
     prod
+        |> List.filter (\(resource, amount) -> amount > 0.0)
         |> List.foldl (\(resource, amount) acc -> EveryDict.update resource (\oldval -> Just (amount + (withDefault 0.0 oldval))) acc) resources
