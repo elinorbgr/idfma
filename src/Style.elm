@@ -51,6 +51,12 @@ css =
                 , padding (px 8)
                 , margin (px 8)
                 , cursor pointer
+                , hover
+                    [ border3 (px 2) solid (hex "000000")
+                    ]
+                ]
+            , class Active
+                [ fontWeight bold
                 ]
             ]
         ]
@@ -69,7 +75,11 @@ css =
                 , width (px 250)
                 , padding (px 8)
                 , margin (px 8)
-                , cursor pointer
+                , withClass Active
+                    [ hover
+                        [ border3 (px 2) solid (hex "000000")
+                        ]
+                    ]
                 ]
             ]
         ]
@@ -77,7 +87,7 @@ css =
         [ fontWeight bold
         ]
     , class Active
-        [
+        [ cursor pointer
         ]
     , class Inactive
         [ backgroundColor (hex "B0B0B0")

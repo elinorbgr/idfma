@@ -44,13 +44,13 @@ renderTabList model =
         [ (List.take (levelNumber model.game.level) allLevels
             |> List.map (\level -> li
                 [ Html.Events.onClick (ChangeTab (Buildings level))
-                , class [ if model.tab == (Buildings level) then Style.Active else Style.Inactive ]
+                , class (if model.tab == (Buildings level) then [ Style.Active ] else [])
                 ] [ text (toString level), text " buildings" ]
             )
         )
         , [ li
             [ Html.Events.onClick (ChangeTab Settings)
-            , class [ if model.tab == Settings then Style.Active else Style.Inactive ]
+            , class  (if model.tab == Settings then [ Style.Active ] else [])
             ] [ text "Settings" ]
           ]
         ]
@@ -69,8 +69,8 @@ buildingsList gs level =
     ul [ id Style.BuildingList ] ( List.concat
         [ (
             if level == Game.Buildings.Planetary then
-                [ li [ Html.Events.onClick GatherWood ] [ text "Gather wood" ]
-                , li [ Html.Events.onClick GatherRocks ] [ text "Gather rocks" ]
+                [ li [ Html.Events.onClick GatherWood, class [ Style.Active ] ] [ text "Gather wood" ]
+                , li [ Html.Events.onClick GatherRocks, class [ Style.Active ] ] [ text "Gather rocks" ]
                 ]
             else
                 []
