@@ -52,7 +52,7 @@ css =
                 , margin (px 8)
                 , cursor pointer
                 , hover
-                    [ border3 (px 2) solid (hex "000000")
+                    [ boxShadow6 inset (px 0) (px 0) (px 0) (px 1) (hex "000000")
                     ]
                 ]
             , class Active
@@ -77,7 +77,7 @@ css =
                 , margin (px 8)
                 , withClass Active
                     [ hover
-                        [ border3 (px 2) solid (hex "000000")
+                        [ boxShadow6 inset (px 0) (px 0) (px 0) (px 1) (hex "000000")
                         ]
                     ]
                 ]
