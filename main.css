@@ -1,0 +1,78 @@
+body {
+    background-color: #FFFFFF;
+}
+
+#ResourceList {
+    list-style: none;
+    border: 1px solid #000000;
+    border-radius: 4px;
+}
+
+#ResourceList > li {
+    display: inline-block !important;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 2px;
+    margin: 2px;
+}
+
+#ResourceList > li > span {
+    margin: 2px;
+}
+
+#TabList {
+    list-style: none;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    float: left;
+}
+
+#TabList > li {
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 8px;
+    cursor: pointer;
+}
+
+#TabList > li:hover {
+    box-shadow: inset 0px 0px 0px 1px #000000;
+}
+
+#TabList > .idfmaActive {
+    font-weight: bold;
+}
+
+#BuildingList {
+    list-style: none;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    margin-left: 350px;
+    max-width: 620px;
+    min-height: 30px;
+}
+
+#BuildingList > li {
+    display: inline-block !important;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    width: 250px;
+    padding: 8px;
+    margin: 8px;
+}
+
+#BuildingList > li.idfmaActive:hover {
+    box-shadow: inset 0px 0px 0px 1px #000000;
+}
+
+.idfmaName {
+    font-weight: bold;
+}
+
+.idfmaActive {
+    cursor: pointer;
+}
+
+.idfmaInactive {
+    background-color: #B0B0B0;
+}
