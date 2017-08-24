@@ -4,4 +4,4 @@ type Resource
     = Wood
     | Minerals
     | Iron
-
+    | Science

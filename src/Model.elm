@@ -2,9 +2,9 @@ module Model exposing (Model, init, update)
 
 import Html exposing (..)
 
-import Game.GameState exposing (GameState, newGame, tickUpdate, build, gather)
+import Game.GameState exposing (GameState, newGame, tickUpdate, build, gather, research)
 import Game.Resources
-import Game.Buildings exposing (Level, initialLevel)
+import Game.Objects exposing (Level, initialLevel)
 import Msg exposing (..)
 import Settings exposing (..)
 
@@ -32,6 +32,8 @@ update msg model =
             ( { model | game = tickUpdate model.game t }, Cmd.none )
         Build b ->
             ( { model | game = build model.game b }, Cmd.none )
+        Research t ->
+            ( { model | game = research model.game t }, Cmd.none )
         GatherWood ->
             ( { model | game = gather model.game Game.Resources.Wood }, Cmd.none )
         GatherRocks ->
