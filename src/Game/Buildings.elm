@@ -46,7 +46,7 @@ buildingInfo b = case b of
         { cost = [(Wood, 25), (Iron, 10)]
         , prod = \b t -> [(Minerals, 1)]
         , entropyCost = 1.0
-        , description = "Produces 1 mineal / s"
+        , description = "Produces 1 mineral / s"
         , flavor = ""
         , level = Planetary
         }

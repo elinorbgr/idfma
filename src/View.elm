@@ -34,7 +34,7 @@ resourcesList: GameState -> Html Msg
 resourcesList gs = 
     ul [ id Style.ResourceList ] (List.concat
         [ if (EveryDict.get Thermodynamics gs.technologies == Just Researched ) then
-            [ li [] [text "Entropy: ", text (Round.round 2 (gs.entropy / gs.maxEntropy)), text "%" ] ]
+            [ li [] [text "Entropy: ", text (Round.round 2 (100 * gs.entropy / gs.maxEntropy)), text "%" ] ]
           else []
         , (EveryDict.toList gs.storage |> List.map (\(resource, amount) -> li [] [
                     span [] [text (toString resource), text ": " ], span [] [text (displayAmount amount) ]
@@ -102,7 +102,7 @@ renderBuilding gs building count =
         , ul [] (List.concat
             [ (info.cost |> List.map (\(resource, amount) -> li [] [ text (toString resource), text ": ", text (displayAmount amount) ]))
             , if EveryDict.get Thermodynamics gs.technologies == Just Researched then
-                [ li [] [ text "Entropy: ", text (toString (info.entropyCost / gs.maxEntropy)), text "%"] ]
+                [ li [] [ text "Entropy: ", text (toString (100 * info.entropyCost / gs.maxEntropy)), text "%"] ]
               else []
             ])
         ]
